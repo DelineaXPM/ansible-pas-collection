@@ -1,0 +1,16 @@
+# Install on Suse family using Zypper
+- name: Check if Delinea repo exists
+  stat:
+    path: /etc/zypp/repos.d/centrify-rpm-suse.repo 
+  register: filecheck
+
+- name: Create Delinea repo if it doesn't exist
+  shell: curl -1sLf 'https://cloudrepo.centrify.com/{{ delinea_suse_urltoken }}/rpm-suse/cfg/setup/bash.rpm.sh' | sudo -E bash
+  args:
+    warn: false
+  when: filecheck.stat.exists == false
+
+- name: Install Delinea Server Suite Agent package
+  zypper:
+    name: CentrifyDC
+    state: latest

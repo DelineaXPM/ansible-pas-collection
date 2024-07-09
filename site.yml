@@ -1,0 +1,6 @@
+---
+- hosts: all
+  roles:
+    - delinea_vault
+    - delinea_auth
+    - delinea_audit

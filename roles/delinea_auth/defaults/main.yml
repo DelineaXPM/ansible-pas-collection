@@ -1,0 +1,55 @@
+---
+## Common variables
+# Task to execute running the playbook
+# Possible values:
+#  - install
+#  - enroll
+#  - unenroll
+#  - remove
+delinea_auth_task: install
+
+# URL Token for Delinea repo
+# No default value, you must use the URL Token value you generated on Delinea Download Center
+# More details here: https://support.delinea.com/s/repository
+# Note that this variable is shared by all Delinea Roles where it is used as there is need for a single URL token per repository
+delinea_redhat_urltoken: 
+delinea_debian_urltoken: 
+delinea_suse_urltoken: 
+
+### Delinea Authentication and Privilege Elevation Services variables
+# Active Directory domain name to use during join operations
+# Example:
+#   delinea_auth_domain: aasgaard.lab
+delinea_auth_domain: 
+
+# Active Directory Service Account to use during join operations
+# Example:
+#   delinea_auth_service_principal: svc_delineaadjoin@AASGAARD.LAB
+delinea_auth_service_principal: 
+
+# Location of the Kerberos Keytab file to use during join operations
+# Default:
+#   delinea_auth_service_keytab: /etc/adjoin.keytab
+delinea_auth_service_keytab: 
+
+# Location of the Kerberos Realm configuration file to use during join operations
+# Default:
+#   delinea_auth_realm_config: /etc/krb5.conf
+delinea_auth_realm_config: 
+
+# Active Directory container to use for Computers object during join operations
+# Example:
+#   delinea_auth_container: aasgaard.lab/Delinea/Computers
+delinea_auth_container: 
+
+# Delinea Zone to use during join operations
+# Example:
+#   delinea_auth_zone: aasgaard.lab/Delinea/Zones/Global/Linux
+delinea_auth_zone: 
+
+# Ignore this if using the root user for operations
+# password for sudo access for some command executions
+# ansible_become_pass: <sudo-password>
+# hardcoded passwords are not recommended
+# Use '--ask-become-pass' while running the playbook. It will prompt to enter the password for sudo access
+# example: ansible-playbook site.yml --ask-become-pass
