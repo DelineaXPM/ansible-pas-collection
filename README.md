@@ -1,19 +1,54 @@
-# ansible-pas-collection
+# Ansible Collection - delinea.pas
+
+Ansible collection for Delinea Priviledged Access Services.
+
+## Description
+
 This is the README file for using Ansible roles in your playbooks to deploy Centrify software and enroll systems to Delinea Platform and/or Active Directory.
 There is three Ansible roles provided, allowing deployment of Delinea Server Suite agents and Delinea Cloud Suite clients.
 - delinea_audit
 - delinea_auth
 - delinea_vault
 
+
+## Requirements
+
+Installing collections with ansible-galaxy is only supported in ansible-core>=2.13.9
+
+
 ## Installation
-To make these roles available in your playbooks, you must install them on your Ansible server by running the following command:
+
+Before using this collection, you need to install it with the Ansible Galaxy command-line tool:
+
 ```
-ansible-galaxy install git@github.com:centrify/ansible#roles
-``` 
+ansible-galaxy collection install delinea.pas
+```
 
-Alternatively, you can copy the content of *roles* folder of this repository under *.ansible/roles* located in the home directory of the user running playbooks or under */etc/ansible/roles*.
+You can also include it in a requirements.yml file and install it with ansible-galaxy collection install -r requirements.yml, using the format:
 
-## Configuration
+
+```yaml
+collections:
+  - name: delinea.pas
+```
+
+Note that if you install any collections from Ansible Galaxy, they will not be upgraded automatically when you upgrade the Ansible package.
+To upgrade the collection to the latest available version, run the following command:
+
+```
+ansible-galaxy collection install delinea.pas --upgrade
+```
+
+You can also install a specific version of the collection, for example, if you need to downgrade when something is broken in the latest version (please report an issue in this repository). Use the following syntax to install version 1.0.0:
+
+```
+ansible-galaxy collection install delinea.pas:==1.0.0
+```
+
+See [using Ansible collections](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html) for more details.
+
+
+## Use Cases
 
 ### Delinea Audit and Monitoring Services Role
 Role is named *delinea_audit* under *roles* folder.  
@@ -110,3 +145,32 @@ delinea_auth_zone: domain.name/Delinea/Zones/AWS/Linux
 # Delinea Audit variables for linux
 delinea_audit_installation_name: DelineaAMS
 ```
+
+
+## Testing
+
+For general testing guidelines, please refer to [Ansible Testing Documentation](https://docs.ansible.com/ansible/latest/dev_guide/testing.html).
+
+
+
+## Contributing (Optional)
+
+
+# Support
+
+For support, please contact us at https://support.delinea.com/s/.
+
+
+## Release Notes and Roadmap
+
+Release notes and Roadmap for this Ansible collection are currently being developed. Please check back later for updates.We welcome community input on our roadmap. If you have suggestions or ideas for future development, please submit a pull request or open an issue on our GitHub repository.
+
+
+## Related Information
+
+Documentation - https://docs.delinea.com/online-help/cloud-suite/integrations/ansible/roles-for-ansible.htm
+
+
+## License Information
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details. 
