@@ -1,4 +1,4 @@
-# Ansible Collection - delinea.pas
+# ansible-pas-collection
 This is the README file for using Ansible roles in your playbooks to deploy Centrify software and enroll systems to Delinea Platform and/or Active Directory.
 There is three Ansible roles provided, allowing deployment of Delinea Server Suite agents and Delinea Cloud Suite clients.
 - delinea_audit
