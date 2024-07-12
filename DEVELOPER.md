@@ -52,7 +52,7 @@ Install Ansible Collection locally
 ansible-galaxy collection install delinea-pas-1.0.0.tar.gz --force
 ```
 
-Test Ansble collection plugin
+Test Ansible collection
 
 ```shell
 ansible-playbook site.yml
