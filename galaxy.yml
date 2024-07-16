@@ -50,3 +50,14 @@ homepage: https://github.com/DelineaXPM/ansible-pas-collection
 
 # The URL to the collection issue tracker
 issues: https://github.com/DelineaXPM/ansible-pas-collection/issues
+
+build_ignore:
+  # Directories:
+  - .git
+  # Files:
+  - .gitattributes
+  - .github
+  - .gitignore
+  - DEVELOPER.md
+  - roles/delinea_auth/files/adjoin.keytab
+  - roles/delinea_auth/files/krb5.conf
