@@ -1,1 +1,6 @@
+---
 requires_ansible: '>=2.13.0'
+tags:
+  - windows
+  - linux
+  - security
