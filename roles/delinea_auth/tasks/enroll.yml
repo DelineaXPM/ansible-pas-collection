@@ -1,7 +1,7 @@
 # Enroll computer to Delinea Zone
 - name: Linux OS family
+  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
   block:
-  
     - name: Install CentrifyDC before enrolling to Delinea Zone
       include_tasks: "install.yml"
 
@@ -14,8 +14,8 @@
         - adinfo_cmd.rc != 0
 
     - name: Enroll computer to Delinea Zone
+      when: adinfo_cmd.rc == 10
       block:
-
         - name: Copy kerberos config file to guarantee finding realm
           copy:
             src: krb5.conf
@@ -23,7 +23,7 @@
             owner: root
             group: root
             mode: '0644'
-          become: yes
+          become: true
 
         - name: Copy service account's keytab file
           copy:
@@ -32,7 +32,7 @@
             owner: root
             group: root
             mode: '0600'
-          become: yes
+          become: true
 
         - name: Join the computer to Active Directory domain using kerberos
           shell: |
@@ -40,15 +40,11 @@
             adjoin "{{ delinea_auth_domain }}" --container "{{ delinea_auth_container }}" --zone "{{ delinea_auth_zone }}" --verbose
             kdestroy
             shred --iterations=1 --remove "{{ delinea_auth_service_keytab }}"
-          become: yes
+          become: true
 
-      when: adinfo_cmd.rc == 10
-  
-  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
-  
 - name: Windows OS family
+  when: ansible_os_family == "Windows"
   block:
-
     - name: Install Delinea Agent before enrolling to Delinea Zone
       include_tasks: install-windows.yml
 
@@ -63,8 +59,8 @@
         - dzinfo_cmd.rc != 0
 
     - name: Enroll computer to Delinea Zone
+      when: dzinfo_cmd.rc == 10
       block:
-
         - name: Copy PowerShell script for Delinea Zone enrolment
           win_copy:
             src: Join-DelineaZone.ps1
@@ -72,8 +68,3 @@
 
         - name: Join the computer to Delinea Zone using prepared Windows Computer
           win_command: powershell.exe -ExecutionPolicy ByPass -File C:\Windows\Temp\Join-DelineaZone.ps1
-
-      when: dzinfo_cmd.rc == 10
-  
-  when: ansible_os_family == "Windows"
-  

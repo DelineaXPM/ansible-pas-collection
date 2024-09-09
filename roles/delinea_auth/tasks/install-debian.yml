@@ -8,7 +8,7 @@
   shell: curl -1sLf 'https://cloudrepo.centrify.com/{{ delinea_debian_urltoken }}/deb/cfg/setup/bash.deb.sh' | sudo -E bash
   args:
     warn: false
-  when: filecheck.stat.exists == false
+  when: not filecheck.stat.exists
 
 - name: Install Delinea Server Suite Agent package
   apt:

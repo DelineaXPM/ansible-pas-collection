@@ -1,12 +1,12 @@
 # Remove Delinea Client package
 - name: Remove CentrifyCC package
-  become: yes
+  become: true
   yum:
     name: CentrifyCC
     state: absent
 
 - name: Delete Delinea Repo
-  become: yes
+  become: true
   file:
-    path: /etc/yum.repos.d/centrify-rpm-redhat.repo 
+    path: /etc/yum.repos.d/centrify-rpm-redhat.repo
     state: absent

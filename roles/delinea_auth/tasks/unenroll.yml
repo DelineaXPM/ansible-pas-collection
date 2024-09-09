@@ -1,5 +1,6 @@
 # Unenroll computer from Delinea Zone
 - name: Linux OS family
+  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
   block:
     - name: Check if computer is enrolled to Delinea Zone
       command: adinfo
@@ -11,6 +12,7 @@
         - adinfo_cmd.rc != 0
 
     - name: Remove computer from Delinea Zone
+      when: adinfo_cmd.rc == 0
       block:
         - name: Copy service account's keytab file
           copy:
@@ -19,7 +21,7 @@
             owner: root
             group: root
             mode: "0600"
-          become: yes
+          become: true
 
         - name: Leave Active Directory domain using Kerberos
           shell: |
@@ -27,12 +29,10 @@
             adleave --remove --verbose
             kdestroy
             shred --iterations=1 --remove "{{ delinea_auth_service_keytab }}"
-          become: yes
-      when: adinfo_cmd.rc == 0
-
-  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
+          become: true
 
 - name: Windows OS family
+  when: ansible_os_family == "Windows"
   block:
     - name: Check if computer is enrolled to Delinea Zone
       win_command: dzinfo.exe
@@ -49,9 +49,7 @@
       block:
         - name: Unenroll the computer from Delinea Zone without restart
           win_shell: dzleave.exe /r no /f
-          ignore_errors: yes
+          ignore_errors: true
           args:
             chdir: 'C:\Program Files\Centrify\Centrify Agent for Windows\'
           when: dzinfo_cmd.rc == 0
-
-  when: ansible_os_family == "Windows"

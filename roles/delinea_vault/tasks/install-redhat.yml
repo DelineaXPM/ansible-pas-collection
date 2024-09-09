@@ -5,14 +5,14 @@
   register: filecheck
 
 - name: Create Delinea repo if it doesn't exist
-  become: yes
+  become: true
   shell: curl -1sLf 'https://cloudrepo.centrify.com/{{ delinea_redhat_urltoken }}/rpm-redhat/cfg/setup/bash.rpm.sh' | sudo -E bash
   args:
     warn: false
-  when: filecheck.stat.exists == false
+  when: not filecheck.stat.exists
 
 - name: Install Delinea Client package
-  become: yes
+  become: true
   yum:
     name: CentrifyCC
     state: latest

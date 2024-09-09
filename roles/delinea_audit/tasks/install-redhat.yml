@@ -5,14 +5,14 @@
   register: filecheck
 
 - name: Create Delinea repo if it doesn't exist
-  become: yes
+  when: not filecheck.stat.exists
+  become: true
   shell: curl -1sLf 'https://cloudrepo.centrify.com/{{ delinea_redhat_urltoken }}/rpm-redhat/cfg/setup/bash.rpm.sh' | sudo -E bash
   args:
     warn: false
-  when: filecheck.stat.exists == false
 
 - name: Install Delinea Audit Agent package
-  become: yes
+  become: true
   yum:
     name: CentrifyDA
     state: latest

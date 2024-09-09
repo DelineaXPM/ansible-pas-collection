@@ -1,7 +1,7 @@
 # Unenroll computer from Delinea Audit
 - name: Linux OS family
+  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
   block:
-  
     - name: Check if computer is enrolled to Delinea Audit & Monitoring Service
       command: dainfo
       register: dainfo_cmd
@@ -13,14 +13,12 @@
 
     - name: Remove computer from Delinea Audit & Monitoring Service
       command: dacontrol --disable
-      become: yes
+      become: true
       when: dainfo_cmd.rc == 0
 
-  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
-  
 #- name: Windows OS family
 #block:
 #
 # >>> Delinea Audit & Monitoring is managed using Group Policies on Windows systems
-#  
+#
 #when: ansible_os_family == "Windows"

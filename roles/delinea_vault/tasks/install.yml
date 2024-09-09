@@ -1,7 +1,7 @@
 # Install Delinea Client package
 - name: Linux OS family
+  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
   block:
-  
     - name: Check if CentrifyCC is installed
       package_facts:
 
@@ -9,11 +9,9 @@
       include_tasks: "install-{{ ansible_os_family|lower }}.yml"
       when: '"centrifycc" not in ansible_facts.packages|lower'
   
-  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
-  
 - name: Windows OS family
+  when: ansible_os_family == "Windows"
   block:
-  
     - name: Check if Delinea Server Suite Agent is installed
       win_reg_stat:
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{43A16456-62CD-45A2-B2DF-743BA7A56894}
@@ -21,6 +19,4 @@
       
     - name: Install CAgent package
       include_tasks: "install-windows.yml"
-      when: cagent_installed.exists == false
-      
-  when: ansible_os_family == "Windows"
+      when: not cagent_installed.exists

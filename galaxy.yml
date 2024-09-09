@@ -38,6 +38,7 @@ tags:
   - auth
   - audit
   - vault
+  - security
 
 # The URL of the originating SCM repository
 repository: https://github.com/DelineaXPM/ansible-pas-collection
@@ -61,3 +62,4 @@ build_ignore:
   - DEVELOPER.md
   - roles/delinea_auth/files/adjoin.keytab
   - roles/delinea_auth/files/krb5.conf
+  - '*.tar.gz'
