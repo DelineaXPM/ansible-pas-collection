@@ -1,0 +1,12 @@
+# Remove Delinea Agent package
+- name: Remove CentrifyDC package
+  become: true
+  yum:
+    name: CentrifyDC
+    state: absent
+
+- name: Delete Delinea Repo
+  become: true
+  file:
+    path: /etc/yum.repos.d/centrify-rpm-redhat.repo
+    state: absent

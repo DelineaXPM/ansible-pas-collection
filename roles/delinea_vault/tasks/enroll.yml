@@ -1,0 +1,51 @@
+# Enroll computer to Delinea Platform
+- name: Linux OS family
+  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
+  block:
+    - name: Install CentrifyCC before enrolling to Delinea Platform
+      include_tasks: "install-{{ ansible_os_family|lower }}.yml"
+
+    - name: Check if computer is enrolled to Delinea Platform
+      command: cinfo
+      register: cinfo_cmd
+      changed_when: cinfo_cmd.rc == 10
+      failed_when:
+        - cinfo_cmd.rc != 10
+        - cinfo_cmd.rc != 0
+
+    - name: Enroll computer to Delinea Platform
+      when: cinfo_cmd.rc == 10
+      block:
+        - name: Enroll computer using registration code
+          become: true
+          command: cenroll --tenant "{{ delinea_vault_tenant_url }}" --code "{{ delinea_vault_registration_code }}" --features "{{ delinea_vault_features }}" --dmc-scope ccli:.* --force --verbose
+
+        - name: Post Enrolment tasks
+          include_tasks: post-enroll.yml
+
+- name: Windows OS family
+  when: ansible_os_family == "Windows"
+  block:
+    - name: Install CAgent before enrolling to Delinea Platform
+      include_tasks: install-windows.yml
+
+    - name: Check if computer is enrolled to Delinea Platform
+      win_command: cinfo.exe
+      args:
+        chdir: C:\Program Files\Centrify\cagent\
+      register: cinfo_cmd
+      changed_when: cinfo_cmd.rc == 10
+      failed_when:
+        - cinfo_cmd.rc != 10
+        - cinfo_cmd.rc != 0
+
+    - name: Enroll computer to Delinea Platform
+      when: cinfo_cmd.rc == 10
+      block:
+        - name: Enroll computer using registration code
+          win_command: cenroll.exe --tenant "{{ delinea_vault_tenant_url }}" --code "{{ delinea_vault_registration_code }}" --features "{{ delinea_vault_features }}" --dmc-scope ccli:.* --force --verbose
+          args:
+            chdir: C:\Program Files\Centrify\cagent\
+
+        - name: Post Enrolment tasks
+          include_tasks: post-enroll.yml

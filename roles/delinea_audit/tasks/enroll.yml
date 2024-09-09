@@ -1,0 +1,30 @@
+# Enroll computer to Delinea Zone
+- name: Linux OS family
+  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
+  block:
+    - name: Install CentrifyDA before enrolment to Delinea Audit & Monitoring Service
+      include_tasks: "install.yml"
+
+    - name: Check if computer is enrolled to Delinea Audit & Monitoring Service
+      command: dainfo
+      register: dainfo_cmd
+      changed_when: dainfo_cmd.rc == 0
+      failed_when:
+        - dainfo_cmd.rc != 10
+        - dainfo_cmd.rc != 0
+
+    - name: Enroll computer to Delinea Audit & Monitoring Service
+      when: dainfo_cmd.rc == 0
+      block:
+        - name: Copy kerberos config file to guarantee finding realm
+          shell: |
+            dacontrol -i {{ delinea_audit_installation_name }}
+            dacontrol --enable
+          become: true
+
+#- name: Windows OS family
+#block:
+#
+# >>> Delinea Audit & Monitoring is managed using Group Policies on Windows systems
+#
+#when: ansible_os_family == "Windows"

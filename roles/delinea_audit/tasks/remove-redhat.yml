@@ -1,0 +1,12 @@
+# Remove Centrify Audit Agent package
+- name: Remove CentrifyDA package
+  yum:
+    name: CentrifyDA
+    state: absent
+  become: true
+
+- name: Delete Delinea Repo
+  file:
+    path: /etc/yum.repos.d/centrify-rpm-redhat.repo
+    state: absent
+  become: true

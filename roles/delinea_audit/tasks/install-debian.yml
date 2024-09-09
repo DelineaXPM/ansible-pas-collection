@@ -1,0 +1,16 @@
+# Install on Debian family using Aptitude
+- name: Check if Delinea repo exists
+  stat:
+    path: /etc/apt/sources.list.d/centrify-deb.list
+  register: filecheck
+
+- name: Create Delinea repo if it doesn't exist
+  when: not filecheck.stat.exists
+  shell: curl -1sLf 'https://cloudrepo.centrify.com/{{ delinea_debian_urltoken }}/deb/cfg/setup/bash.deb.sh' | sudo -E bash
+  args:
+    warn: false
+
+- name: Install Delinea Audit Agent package
+  apt:
+    name: centrifyda
+    state: latest

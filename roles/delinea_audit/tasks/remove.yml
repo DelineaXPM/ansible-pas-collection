@@ -1,0 +1,33 @@
+# Remove Centrify Agent package
+- name: Linux OS family
+  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
+  block:
+    - name: Check if CentrifyDA is installed
+      package_facts:
+
+    - name: Remove Delinea Server Suite Agent package
+      when: '"centrifyda" in ansible_facts.packages|lower'
+      block:
+        - name: Unenroll before removing CentrifyDA package
+          include_tasks: unenroll.yml
+
+        - name: Remove CentrifyDA package
+          include_tasks: "remove-{{ ansible_os_family|lower }}.yml"
+
+- name: Windows OS family
+  when: ansible_os_family == "Windows"
+  block:
+    - name: Check if Delinea Server Suite Agent is installed
+      win_reg_stat:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{FE1863FD-8090-4547-94AD-472A0DC42988}
+      register: cagent_installed
+
+    - name: Remove Delinea Server Suite Agent package
+      when: cagent_installed.exists
+      block:
+        - name: Unenroll before removing Delinea Server Suite Agent package
+          include_tasks: unenroll.yml
+          when: cinfo_cmd.rc == 0
+
+        - name: Remove Delinea Server Suite Agent package
+          include_tasks: "remove-windows.yml"

@@ -1,0 +1,37 @@
+# Unenroll computer from Delinea Platform
+- name: Linux OS family
+  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
+  block:
+    - name: Check if computer is enrolled to Delinea Platform
+      command: cinfo
+      register: cinfo_cmd
+      changed_when: cinfo_cmd.rc == 0
+      failed_when:
+        - cinfo_cmd.rc != 10
+        - cinfo_cmd.rc != 2
+        - cinfo_cmd.rc != 0
+
+    - name: Unenroll from Delinea Platform without deleting System
+      become: true
+      command: cunenroll --machine --verbose
+      when: cinfo_cmd.rc == 0
+
+- name: Windows OS family
+  when: ansible_os_family == "Windows"
+  block:
+    - name: Check if computer is enrolled to Delinea Platform
+      win_command: cinfo.exe
+      args:
+        chdir: C:\Program Files\Centrify\cagent\
+      register: cinfo_cmd
+      changed_when: cinfo_cmd.rc == 0
+      failed_when:
+        - cinfo_cmd.rc != 10
+        - cinfo_cmd.rc != 2
+        - cinfo_cmd.rc != 0
+
+    - name: Unenroll from Delinea Platform without deleting System
+      win_command: cunenroll.exe --machine --verbose
+      args:
+        chdir: C:\Program Files\Centrify\cagent\
+      when: cinfo_cmd.rc == 0

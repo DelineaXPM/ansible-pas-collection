@@ -1,0 +1,10 @@
+# Remove Delinea Agent package
+- name: Remove CentrifyDC package
+  apt:
+    name: centrifydc
+    state: absent
+
+- name: Delete Delinea Repo
+  file:
+    path: /etc/apt/sources.list.d/centrify-deb.list
+    state: absent

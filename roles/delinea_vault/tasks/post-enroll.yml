@@ -1,0 +1,24 @@
+# Post enrollment tasks
+# Delinea recommend enabling Local Account Password Management for system account (i.e. root and Administrator)
+- name: Linux OS family
+  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
+  block:
+    - name: Enroll root account
+      become: true
+      script: enroll_local_account.sh  --user root --password "{{ delinea_vault_tmp_password }}"
+      when: delinea_vault_lapm
+
+    - name: Setup CentrifyCLI
+      script: setup_ccli.sh
+      when: delinea_vault_ccli
+
+- name: Windows OS family
+  when: ansible_os_family == "Windows"
+  block:
+    - name: Enroll Administrator account
+      script: enroll_local_account.ps1  --user Administrator --password "{{ delinea_vault_tmp_password }}"
+      when: delinea_vault_lapm
+
+    - name: Setup CentrifyCLI
+      script: setup_ccli.ps1
+      when: delinea_vault_ccli

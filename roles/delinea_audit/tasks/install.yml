@@ -1,0 +1,22 @@
+# Install Delinea Audit package
+- name: Linux OS family
+  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
+  block:
+    - name: Check if CentrifyDA is installed
+      package_facts:
+
+    - name: Install CentrifyDA package
+      include_tasks: "install-{{ ansible_os_family|lower }}.yml"
+      when: '"centrifyda" not in ansible_facts.packages|lower'
+
+- name: Windows OS family
+  when: ansible_os_family == "Windows"
+  block:
+    - name: Check if Delinea Server Suite Agent is installed
+      win_reg_stat:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{FE1863FD-8090-4547-94AD-472A0DC42988}
+      register: cagent_installed
+
+    - name: Install Delinea Server Suite Agent package
+      when: not cagent_installed.exists
+      include_tasks: "install-windows.yml"

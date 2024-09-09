@@ -1,0 +1,31 @@
+---
+## Common variables
+# Task to execute running the playbook
+# Possible values:
+#  - install
+#  - enroll
+#  - unenroll
+#  - remove
+delinea_audit_task: install
+
+# URL Token for Delinea repo
+# No default value, you must use the URL Token value you generated on Delinea Download Center
+# More details here: https://support.delinea.com/s/repository
+# Note that this variable is shared by all Delinea Roles where it is used as there is need for a single URL token per repository
+delinea_redhat_urltoken: 
+delinea_debian_urltoken: 
+delinea_suse_urltoken: 
+
+
+### Delinea Audit and Monitoring Services variables
+# Active Directory domain name to use during join operations
+# Example:
+#   delinea_auth_domain: aasgaard.lab
+delinea_audit_installation_name: 
+
+# Ignore this if using the root user for operations
+# password for sudo access for some command executions
+# ansible_become_pass: <sudo-password>
+# hardcoded passwords are not recommended
+# Use '--ask-become-pass' while running the playbook. It will prompt to enter the password for sudo access
+# example: ansible-playbook site.yml --ask-become-pass

@@ -1,0 +1,18 @@
+# Install on RedHat family using Yum
+- name: Check if Delinea repo exists
+  stat:
+    path: /etc/yum.repos.d/centrify-rpm-redhat.repo
+  register: filecheck
+
+- name: Create Delinea repo if it doesn't exist
+  when: not filecheck.stat.exists
+  become: true
+  shell: curl -1sLf 'https://cloudrepo.centrify.com/{{ delinea_redhat_urltoken }}/rpm-redhat/cfg/setup/bash.rpm.sh' | sudo -E bash
+  args:
+    warn: false
+
+- name: Install Delinea Audit Agent package
+  become: true
+  yum:
+    name: CentrifyDA
+    state: latest

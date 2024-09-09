@@ -1,0 +1,16 @@
+# Install on Debian family using Aptitude
+- name: Check if Delinea repo exists
+  stat:
+    path: /etc/apt/sources.list.d/centrify-deb.list
+  register: filecheck
+
+- name: Create Delinea repo if it doesn't exist
+  shell: curl -1sLf 'https://cloudrepo.centrify.com/{{ delinea_debian_urltoken }}/deb/cfg/setup/bash.deb.sh' | sudo -E bash
+  args:
+    warn: false
+  when: not filecheck.stat.exists
+
+- name: Install Delinea Client package
+  apt:
+    name: centrifycc
+    state: latest

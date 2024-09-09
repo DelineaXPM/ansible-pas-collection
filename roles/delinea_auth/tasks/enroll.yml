@@ -1,0 +1,70 @@
+# Enroll computer to Delinea Zone
+- name: Linux OS family
+  when: ansible_os_family in ["Debian", "RedHat", "Suse"]
+  block:
+    - name: Install CentrifyDC before enrolling to Delinea Zone
+      include_tasks: "install.yml"
+
+    - name: Check if computer is enrolled to Delinea Platform
+      command: adinfo
+      register: adinfo_cmd
+      changed_when: adinfo_cmd.rc == 10
+      failed_when:
+        - adinfo_cmd.rc != 10
+        - adinfo_cmd.rc != 0
+
+    - name: Enroll computer to Delinea Zone
+      when: adinfo_cmd.rc == 10
+      block:
+        - name: Copy kerberos config file to guarantee finding realm
+          copy:
+            src: krb5.conf
+            dest: "{{ delinea_auth_realm_config }}"
+            owner: root
+            group: root
+            mode: '0644'
+          become: true
+
+        - name: Copy service account's keytab file
+          copy:
+            src: adjoin.keytab
+            dest: "{{ delinea_auth_service_keytab }}"
+            owner: root
+            group: root
+            mode: '0600'
+          become: true
+
+        - name: Join the computer to Active Directory domain using kerberos
+          shell: |
+            kinit -kt "{{ delinea_auth_service_keytab }}" "{{ delinea_auth_service_principal }}"
+            adjoin "{{ delinea_auth_domain }}" --container "{{ delinea_auth_container }}" --zone "{{ delinea_auth_zone }}" --verbose
+            kdestroy
+            shred --iterations=1 --remove "{{ delinea_auth_service_keytab }}"
+          become: true
+
+- name: Windows OS family
+  when: ansible_os_family == "Windows"
+  block:
+    - name: Install Delinea Agent before enrolling to Delinea Zone
+      include_tasks: install-windows.yml
+
+    - name: Check if computer is enrolled to Delinea Zone
+      win_command: dzinfo.exe
+      args:
+        chdir: C:\Program Files\Centrify\Centrify Agent for Windows\
+      register: dzinfo_cmd
+      changed_when: dzinfo_cmd.rc == 1
+      failed_when:
+        - dzinfo_cmd.rc != 1
+        - dzinfo_cmd.rc != 0
+
+    - name: Enroll computer to Delinea Zone
+      when: dzinfo_cmd.rc == 10
+      block:
+        - name: Copy PowerShell script for Delinea Zone enrolment
+          win_copy:
+            src: Join-DelineaZone.ps1
+            dest: C:\Windows\Temp\Join-DelineaZone.ps1
+
+        - name: Join the computer to Delinea Zone using prepared Windows Computer
+          win_command: powershell.exe -ExecutionPolicy ByPass -File C:\Windows\Temp\Join-DelineaZone.ps1
