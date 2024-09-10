@@ -1,4 +1,4 @@
-# Ansible Collection - delinea.pas
+# Ansible Collection - delinea.pas 
 
 Ansible collection for Delinea Priviledged Access Services.
 
