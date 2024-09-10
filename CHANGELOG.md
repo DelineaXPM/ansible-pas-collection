@@ -5,7 +5,7 @@
 - Initial release of the Delinea Vault role.
 - Added support for enrolling local accounts.
 
-## [1.1.0] - 2024-09-09
+## [1.0.1] - 2024-09-09
 ### Added
 - Added support for CentrifyCLI setup.
 - Improved error handling for account enrollment.
