@@ -49,7 +49,7 @@ ansible-galaxy collection build --force
 Install Ansible Collection locally
 
 ```shell
-ansible-galaxy collection install delinea-pas-1.0.2.tar.gz --force
+ansible-galaxy collection install delinea-pas-1.0.3.tar.gz --force
 ```
 
 Test Ansible collection
@@ -92,12 +92,12 @@ Follow [this link][delinea-pas-galaxy] to open the `delinea.pas` collection in [
    ansible-galaxy collection build --force
    ```
 
-   As a result a new archive will be generated (e.g. `delinea-pas-1.0.2.tar.gz`) in the collection directory (`~/ansible_collections/delinea/pas/`).
+   As a result a new archive will be generated (e.g. `delinea-pas-1.0.3.tar.gz`) in the collection directory (`~/ansible_collections/delinea/pas/`).
 
 5. Publish the collection:
 
    ```shell
-   ansible-galaxy collection publish ~/ansible_collections/delinea/pas//delinea-pas-1.0.2.tar.gz -api-key=SECRET
+   ansible-galaxy collection publish ~/ansible_collections/delinea/pas//delinea-pas-1.0.3.tar.gz -api-key=SECRET
    ```
 
 [developing-collections]: https://docs.ansible.com/ansible/latest/dev_guide/developing_collections.html

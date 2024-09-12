@@ -39,10 +39,10 @@ To upgrade the collection to the latest available version, run the following com
 ansible-galaxy collection install delinea.pas --upgrade
 ```
 
-You can also install a specific version of the collection, for example, if you need to downgrade when something is broken in the latest version (please report an issue in this repository). Use the following syntax to install version 1.0.2:
+You can also install a specific version of the collection, for example, if you need to downgrade when something is broken in the latest version (please report an issue in this repository). Use the following syntax to install version 1.0.0:
 
 ```
-ansible-galaxy collection install delinea.pas:==1.0.2
+ansible-galaxy collection install delinea.pas:==1.0.0
 ```
 
 See [using Ansible collections](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html) for more details.
