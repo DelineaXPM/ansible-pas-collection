@@ -51,11 +51,11 @@ See [using Ansible collections](https://docs.ansible.com/ansible/devel/user_guid
 ## Use Cases
 
 ### Delinea Audit and Monitoring Services Role
-Role is named *delinea_audit* under *roles* folder.  
+Role is named *delinea_audit* under *roles* folder.
 To start using this Role you should check the default variables under *roles/delinea_audit/defaults/main.yml* and declare values for your inventory using host_vars or group_vars
 
 ### Delinea Authentication and Privilege Elevation Services Role
-Role is named *delinea_auth* under *roles* folder.  
+Role is named *delinea_auth* under *roles* folder.
 To start using this Role you should check the default variables under *roles/delinea_auth/defaults/main.yml* and declare values for your inventory using host_vars or group_vars
 You will also need to generate or edit the following files under *roles/delinea_auth/files*
 - adjoin.keytab
@@ -64,24 +64,24 @@ You will also need to generate or edit the following files under *roles/delinea_
 - Join-DelineaZone.ps1
 - krb5.conf
 
-**adjoin.keytab:**  
+**adjoin.keytab:**
 You can generate a keytab file to use with Active Directory service account using the followin commands on Linux (requires a Delinea joined Linux server).
 
-**Delinea Agent for Windows64.msi and Group Policy Deployment.mst:**  
+**Delinea Agent for Windows64.msi and Group Policy Deployment.mst:**
 Both those files should be copied from the software source of the Delinea Infrastructure Services for Windows in use. Those two files are located under */Agent* folder.
 
-**Join-DelineaZone.ps1:**  
+**Join-DelineaZone.ps1:**
 This PowerShell script is provided as as sample and is used to join Windows system to existing Delinea Zone. This script can be modified to satisfy any customisation of the join process in your environment.
- 
-**krb5.conf:**  
+
+**krb5.conf:**
 You can copy the Kerberos config file of any of your Delinea joined Linux systems to the same Active Directory domain you plan to join using Ansible. Alternatively you can manually create this file using Kerberos docuementation.
 
 ### Delinea Vault Role
-Role is named *delinea_vault* under *roles* folder.  
+Role is named *delinea_vault* under *roles* folder.
 To start using this Role you should check the default variables under *roles/delinea_vault/defaults/main.yml* and declare values for your inventory using host_vars or group_vars
 
 ### Example
-This is an example of hosts file declaring default inventory. 
+This is an example of hosts file declaring default inventory.
 
 **hosts**
 ```
@@ -123,7 +123,7 @@ Then an example of how to set values for Delinea roles on the Linux group of sys
 **linux**
 ```
 # Connection variable for linux
-ansible_user: ansible 
+ansible_user: ansible
 ansible_become: yes
 
 # Delinea variables for linux
@@ -134,7 +134,7 @@ delinea_suse_urltoken: ga-xxxxxxxx-caHL
 # Delinea Vault variables for linux
 delinea_vault_tenant_url: https://company.my.centrify.net
 delinea_vault_registration_code: I3-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-AWQJ5O1
-delinea_vault_features: aapm,dmc 
+delinea_vault_features: aapm,dmc
 
 # Delinea Auth variables for linux
 delinea_auth_domain: domain.name
@@ -173,4 +173,4 @@ Documentation - https://docs.delinea.com/online-help/cloud-suite/integrations/an
 
 ## License Information
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details. 
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.

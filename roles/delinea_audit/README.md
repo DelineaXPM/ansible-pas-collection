@@ -6,7 +6,7 @@ This role installs, enrolls, unenrolls, and removes Delinea Audit and Monitoring
 
 ## Requirements
 
-- Ansible 2.9 or higher
+- Ansible 2.15 or higher
 - Supported OS:
   - RHEL/CentOS
   - Debian

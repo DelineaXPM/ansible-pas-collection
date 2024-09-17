@@ -1,0 +1,22 @@
+galaxy_info:
+  author: DelineaSahilWankhede
+  description: >
+    This role installs, enrolls, unenrolls, and removes Delinea Privileged Access Services (PAS) on your systems. It supports RHEL/CentOS, Debian, and SUSE distributions.
+  company: Delinea Software Ltd.
+  license: MIT
+  min_ansible_version: 2.15
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: CentOS
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+    - name: SUSE
+      versions:
+        - all
+
+dependencies: []

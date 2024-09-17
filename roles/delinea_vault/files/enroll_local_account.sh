@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -21,19 +21,19 @@ while [ $# -gt 0 ]; do
 done
 
 # Check if local account already enrolled
-cgetaccount -T system -s $USERNAME >> /dev/null
-if [ $? -eq 6 ]
-then
+if cgetaccount -T system -s "$USERNAME" >> /dev/null; then
+  # Account exists in vault
+  echo "Warning: Account already exists in vault. Skipping enrolment."
+  exit 0
+elif [ $? -eq 6 ]; then
   # Account does not exist in vault
-  echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
+  echo -e "$PASSWORD\n$PASSWORD" | passwd "$USERNAME"
 
-  if [ $? -eq 0 ]
-  then
+  if passwd "$USERNAME"; then 
     # Password updated, enrolling account
-    echo $PASSWORD | csetaccount --managed=true --stdin $USERNAME
+    echo "$PASSWORD" | csetaccount --managed=true --stdin "$USERNAME"
 
-    if [ $? -ne 0 ]
-    then
+    if ! csetaccount --managed=true --stdin "$USERNAME"; then
       # Unable to vault account 
       echo "Error: Unable to vault account '$USERNAME'." >&2
       exit 1
@@ -45,15 +45,8 @@ then
     exit 1
   fi
 
-elif [ $? -eq 0 ]
-then
-  # Account exists in vault
-  echo "Warning: Account already exists in vault. Skipping enrolment."
-  exit 0
-
 else
   # Unhandled exception
-  echo "Error: Unexpected error occured while checking account." >&2
+  echo "Error: Unexpected error occurred while checking account." >&2
   exit 1
-
 fi
