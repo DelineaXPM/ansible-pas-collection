@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.4] - 2024-09-17
+### Changed
+- The collection `DelineaXPM/ansible-pas-collection` is now publicly accessible.
+- Made minor changes for improved functionality and usability.
+
 ## [1.0.3] - 2024-09-12
 ### Added
 - Added description to each role in the collection for better clarity and usability.
